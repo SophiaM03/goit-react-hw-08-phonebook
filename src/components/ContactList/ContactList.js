@@ -5,12 +5,17 @@ import { deleteContact } from 'redux/contacts/contactsOperations';
 import { getFilteredContacts } from 'redux/contacts/selectors';
 import { fetchContacts } from 'redux/contacts/contactsOperations';
 import { List } from './ContactList.styled';
+import { isTokenExists } from 'redux/auth/auth-selectors';
 
 function ContactList() {
   const dispatch = useDispatch();
+  const isToken = useSelector(isTokenExists);
+
   useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
+    if (isToken) {
+      dispatch(fetchContacts());
+    }
+  }, [dispatch, isToken]);
 
   const contacts = useSelector(getFilteredContacts);
 
