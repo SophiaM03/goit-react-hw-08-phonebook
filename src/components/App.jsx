@@ -2,7 +2,7 @@
 import { Route, Routes } from 'react-router-dom';
 import RestrictedRoute from 'components/RestrictedRoute/RestrictedRoute';
 import PrivateRoute from 'components/PrivateRoute/PrivateRoute';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect } from 'react';
 import operations from '../redux/auth/operations';
 import HomePage from '../page/HomePage';
@@ -11,6 +11,7 @@ import LoginPage from '../page/LoginPage';
 import RegisterPage from '../page/RegisterPage';
 import { AppBar } from './AppBar/AppBar';
 import { useAuth } from '../components/hooks/useAuth';
+import { isTokenExists } from 'redux/auth/auth-selectors';
 
 // const Container = styled.div`
 //   width: 1200px;
@@ -20,10 +21,11 @@ import { useAuth } from '../components/hooks/useAuth';
 export function App() {
   const dispatch = useDispatch();
   const { isRefreshing } = useAuth();
+  const token = useSelector(isTokenExists);
 
   useEffect(() => {
-    dispatch(operations.refreshUser());
-  }, [dispatch]);
+    dispatch(operations.refreshUser(token));
+  }, [dispatch, token]);
 
   return isRefreshing ? (
     <h2>Refreshing user...</h2>

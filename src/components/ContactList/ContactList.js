@@ -13,7 +13,7 @@ function ContactList() {
 
   useEffect(() => {
     if (isToken) {
-      dispatch(fetchContacts());
+      dispatch(fetchContacts(isToken));
     }
   }, [dispatch, isToken]);
 
